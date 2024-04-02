@@ -3,18 +3,13 @@ package edu.kh.project.email.controller;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import edu.kh.project.email.model.service.EmailService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 
@@ -57,11 +52,7 @@ public class EmailController {
 		// 아니면 0
 		return service.checkAuthKey(map);
 	}
-	
-	
-	
 }
-
 
 
 /* @SessionAttribute("Key")
@@ -94,24 +85,25 @@ public class EmailController {
 
 
 // 필드에 의존성 주입하는 방법 (권장 X)
-//@Autowired // 의존성 주입(DI)
+// @Autowired // 의존성 주입(DI)
 // private EmailService service;
 
 // setter 이용
 
-//private EmailService service;
-//@Autowired
-//public void setService(EmailService service) {
-//	this.service = service;
-//}
+// private EmailService service;
+
+// @Autowired
+// public void setService(EmailService service) {
+// 	this.service = service;
+// }
 
 
 // 생성자
-//private EmailService service;
-//private MemberService service2;
+// private EmailService service;
+// private MemberService service2;
 //
-//@Autowired
-//public EmailController(EmailService service, MemberService service2) {
+// @Autowired
+// public EmailController(EmailService service, MemberService service2) {
 //	this.service = service;
 //	this.service2 = service2;
-//}
+// }

@@ -8,6 +8,14 @@ import org.apache.ibatis.annotations.Mapper;
 public interface EmailMapper {
 
 	int updateAuthKey(Map<String, String> map);
+	/*
+	 * public int updateAuthKey(Map<String, String> map){
+	 *   return sqlSessionTemplte
+	 *   	.update("edu.kh.project.email.model.mapper.EmailMapper", map);
+	 * }
+	 * 
+	 * 
+	 * */
 
 	int insertAuthKey(Map<String, String> map);
 
