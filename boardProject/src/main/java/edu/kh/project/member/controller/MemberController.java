@@ -1,5 +1,7 @@
 package edu.kh.project.member.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -238,6 +240,7 @@ public class MemberController {
 	}
 	
 	
+	
 	/** 빠른 로그인
 	 * @param memberEmail
 	 * @param model
@@ -262,8 +265,15 @@ public class MemberController {
 	}
 	
 	
-	
-	
+	@ResponseBody
+	@GetMapping("selectMemberList")
+	public List<Member> selectMemberList(){
+		
+		// (java)List 
+		// -> (Spring)HttpMessageConverter가 JSON Array(문자열)로 변경
+		// -> (JS)response.json() -> [{}, {}, {}] JS 객체 배열
+		return service.selectMemberList();
+	}
 	
 }
 
