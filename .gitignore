@@ -6,7 +6,6 @@ MANIFEST.MF
 settings.json
 *.log
 config.properties
-ServetTest/
 
 driver.xml
 
