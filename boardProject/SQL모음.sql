@@ -639,11 +639,103 @@ AND BOARD_CODE = 3
 ;
 
 
+-----------------------------------------------------
+
+/* BOARD_IMG 테이블용 시퀀스 생성 */
+CREATE SEQUENCE SEQ_IMG_NO NOCACHE;
+
+/* BOARD_IMG 테이블에 샘플 데이터 삽입 */
+INSERT INTO "BOARD_IMG" VALUES(
+	SEQ_IMG_NO.NEXTVAL, '/images/board/', '원본1.jpg', 'test1.jpg', 0, 1998
+);
+
+INSERT INTO "BOARD_IMG" VALUES(
+	SEQ_IMG_NO.NEXTVAL, '/images/board/', '원본2.jpg', 'test2.jpg', 1, 1998
+);
+
+INSERT INTO "BOARD_IMG" VALUES(
+	SEQ_IMG_NO.NEXTVAL, '/images/board/', '원본3.jpg', 'test3.jpg', 2, 1998
+);
+
+INSERT INTO "BOARD_IMG" VALUES(
+	SEQ_IMG_NO.NEXTVAL, '/images/board/', '원본4.jpg', 'test4.jpg', 3, 1998
+);
+
+INSERT INTO "BOARD_IMG" VALUES(
+	SEQ_IMG_NO.NEXTVAL, '/images/board/', '원본5.jpg', 'test5.jpg', 4, 1998
+);
 
 
+COMMIT;
 
 
+-------------------------------------------------------
+/* 게시글 상세 조회 */
+SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_CODE, READ_COUNT, 
+	MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG,
+	
+	TO_CHAR(BOARD_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') BOARD_WRITE_DATE,  
+	TO_CHAR(BOARD_UPDATE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') BOARD_UPDATE_DATE,
+	
+	(SELECT COUNT(*) 
+	 FROM "BOARD_LIKE"
+	 WHERE BOARD_NO = 1998) LIKE_COUNT,
+	 
+	(SELECT IMG_PATH || IMG_RENAME 
+	 FROM "BOARD_IMG"
+	 WHERE BOARD_NO = 1998
+	 AND   IMG_ORDER = 0) THUMBNAIL
 
+FROM "BOARD"
+JOIN "MEMBER" USING(MEMBER_NO)
+WHERE BOARD_DEL_FL = 'N'
+AND BOARD_CODE = 1
+AND BOARD_NO = 1998
+;
+
+
+---------------------------------------------
+/* 상세조회 되는 게시글의 모든 이미지 조회 */
+SELECT * 
+FROM "BOARD_IMG"
+WHERE BOARD_NO = 1998
+ORDER BY IMG_ORDER;
+
+
+---------------------------------------------
+/* 상세조회 되는 게시글의 모든 댓글 조회 */
+
+/*계층형 쿼리*/
+
+SELECT LEVEL, C.* FROM
+	(SELECT COMMENT_NO, COMMENT_CONTENT,
+	    TO_CHAR(COMMENT_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') COMMENT_WRITE_DATE,
+	    BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, PARENT_COMMENT_NO, COMMENT_DEL_FL
+	FROM "COMMENT"
+	JOIN MEMBER USING(MEMBER_NO)
+	WHERE BOARD_NO = 1998) C
+WHERE COMMENT_DEL_FL = 'N'
+OR 0 != (SELECT COUNT(*) FROM "COMMENT" SUB
+				WHERE SUB.PARENT_COMMENT_NO = C.COMMENT_NO
+				AND COMMENT_DEL_FL = 'N')
+START WITH PARENT_COMMENT_NO IS NULL
+CONNECT BY PRIOR COMMENT_NO = PARENT_COMMENT_NO
+ORDER SIBLINGS BY COMMENT_NO
+;
+
+
+-------------------------------------------------------
+
+/* 좋아요 테이블(BOARD_LIKE) 샘플 데이터 추가 */
+INSERT INTO "BOARD_LIKE"
+VALUES(1, 1998); -- 1번 회원이 1998번 글에 좋아요를 클릭함
+
+COMMIT;
+
+-- 좋아요 여부 확인 (  1:O  /  2:X  )
+SELECT COUNT(*) FROM "BOARD_LIKE"
+WHERE MEMBER_NO = 22
+AND BOARD_NO = 1998;
 
 
 
@@ -654,65 +746,3 @@ AND BOARD_CODE = 3
 
 
 	
-----------------------------------------------------------------------
-/* 책 관리 프로젝트 (연습용)*/
-
-CREATE TABLE "BOOK" (
-	"BOOK_NO"	NUMBER		NOT NULL,
-	"BOOK_TITLE"	NVARCHAR2(50)		NOT NULL,
-	"BOOK_WRITER"	NVARCHAR2(20)		NOT NULL,
-	"BOOK_PRICE"	NUMBER		NOT NULL,
-	"REG_DATE"	DATE	DEFAULT SYSDATE	NOT NULL
-);
-
-
-
-COMMENT ON COLUMN "BOOK"."BOOK_NO" IS '책 번호';
-
-COMMENT ON COLUMN "BOOK"."BOOK_TITLE" IS '책 제목';
-
-COMMENT ON COLUMN "BOOK"."BOOK_WRITER" IS '글쓴이';
-
-COMMENT ON COLUMN "BOOK"."BOOK_PRICE" IS '가격';
-
-COMMENT ON COLUMN "BOOK"."REG_DATE" IS '등록일';
-
-ALTER TABLE "BOOK" ADD CONSTRAINT "PK_BOOK" PRIMARY KEY (
-	"BOOK_NO"
-);
-
-
--- 책 번호 시퀀스
-CREATE SEQUENCE SEQ_BOOK_NO NOCACHE;
-
--- 전체 조회
-SELECT BOOK_NO, BOOK_TITLE, BOOK_WRITER, BOOK_PRICE,
-			TO_CHAR(REG_DATE, 'YYYY-MM-DD') REG_DATE
-FROM "BOOK"
-ORDER BY BOOK_NO;
-
-SELECT * FROM "BOOK";
-
--- 샘플 데이터
-INSERT INTO "BOOK"
-VALUES(SEQ_BOOK_NO.NEXTVAL, '어린왕자', '생택쥐베리', 8000, DEFAULT); 
-
-INSERT INTO "BOOK"
-VALUES(SEQ_BOOK_NO.NEXTVAL, '자바의 정석', '남궁 성', 30000, DEFAULT); 
-
-
-COMMIT;
-
-
--- 제목 검색
--- 전체 조회
-SELECT BOOK_NO, BOOK_TITLE, BOOK_WRITER, BOOK_PRICE,
-			TO_CHAR(REG_DATE, 'YYYY-MM-DD') REG_DATE
-FROM "BOOK"
-WHERE BOOK_TITLE LIKE '%자바%'
-ORDER BY BOOK_NO;
-
-
-----------------------------------------------------------------------
-
-
