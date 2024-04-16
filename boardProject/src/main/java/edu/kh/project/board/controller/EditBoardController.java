@@ -1,7 +1,9 @@
 package edu.kh.project.board.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
@@ -115,6 +118,87 @@ public class EditBoardController {
 		// 게시글 작성(INSERT) 성공 시 -> 작성된 글 상세 조회로 redirect
 		return "redirect:" + path;
 	}
+	
+	
+	/* 게시글 삭제 */
+	
+//	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete")
+//	@PostMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete")
+	
+	
+	// 하나의 요청 주소로 GET, POST 주소를 모두 처리하는 방법
+	@RequestMapping(value="{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete",
+					method = {RequestMethod.GET, RequestMethod.POST})
+	public String boardDelete(
+		@PathVariable("boardCode") int boardCode,
+		@PathVariable("boardNo") int boardNo,
+		@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+		@SessionAttribute("loginMember") Member loginMember,
+		RedirectAttributes ra
+		) {
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("boardCode", boardCode);
+		map.put("boardNo", boardNo);
+		map.put("memberNo", loginMember.getMemberNo());
+		
+		
+		int result = service.boardDelete(map);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			path = String.format("/board/%d", boardCode);
+			message = "삭제 되었습니다";
+		}else {
+			path = String.format("/board/%d/%d?cp=%d", boardCode, boardNo, cp);
+			message = "삭제 실패";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
+	
+	
+/*
+	@PostMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/delete")
+	public String boardDeletePost(
+		@PathVariable("boardCode") int boardCode,
+		@PathVariable("boardNo") int boardNo,
+		@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+		@SessionAttribute("loginMember") Member loginMember,
+		RedirectAttributes ra
+		) {
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("boardCode", boardCode);
+		map.put("boardNo", boardNo);
+		map.put("memberNo", loginMember.getMemberNo());
+		
+		
+		int result = service.boardDelete(map);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			path = String.format("/board/%d", boardCode);
+			message = "삭제 되었습니다";
+		}else {
+			path = String.format("/board/%d/%d?cp=%d", boardCode, boardNo, cp);
+			message = "삭제 실패";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
+	
+	*/
+	
+	
 	
 	
 	
