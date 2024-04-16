@@ -74,8 +74,6 @@
 				   #{img.boardNo} 
 				   
 				   
-				   
-				   
 			FROM DUAL
   		</foreach>
   	
