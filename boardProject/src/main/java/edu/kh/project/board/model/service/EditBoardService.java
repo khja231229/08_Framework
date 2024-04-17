@@ -23,6 +23,17 @@ public interface EditBoardService {
 	 * @return result
 	 */
 	int boardDelete(Map<String, Integer> map);
+
+	/** 게시글 수정
+	 * @param inputBoard
+	 * @param images
+	 * @param deleteOrder
+	 * @return result
+	 */
+	int boardUpdate(Board inputBoard, 
+					List<MultipartFile> images,
+					String deleteOrder)
+		throws IllegalStateException, IOException;
 	
 	
 	
