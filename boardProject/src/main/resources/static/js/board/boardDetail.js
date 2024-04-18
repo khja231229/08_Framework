@@ -97,12 +97,12 @@ if(deleteBtn2 != null){
     const url = location.pathname.replace("board","editBoard")  + "/delete"; 
 
     // form태그 생성
-    const form = document.querySelector("form");
+    const form = document.createElement("form");
     form.action = url;
     form.method = "POST";
 
     // cp값을 저장할 input 생성
-    const input = document.querySelector("input");
+    const input = document.createElement("input");
     input.type = "hidden";
     input.name = "cp";
 
@@ -135,3 +135,22 @@ if(updateBtn != null){ // 수정 버튼 존재 시
 
   }) 
 }
+
+
+
+// ---------------------------------------------------
+
+/* 목록으로 돌아가는 버튼 */
+const goToListBtn = document.querySelector("#goToListBtn");
+
+goToListBtn.addEventListener("click", () => {
+
+  // 상세조회 : /board/1/2011?cp=1
+  // 목록     : /board/1?cp=1
+
+  let url = location.pathname;
+  url = url.substring(0, url.lastIndexOf("/"));
+
+  location.href = url + location.search;
+                        // 쿼리스트링
+});
