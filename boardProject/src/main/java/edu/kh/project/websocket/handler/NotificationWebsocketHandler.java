@@ -30,6 +30,7 @@ public class NotificationWebsocketHandler extends TextWebSocketHandler{
     // WebSocketSession : 클라이언트 - 서버간 전이중통신을 담당하는 객체 (JDBC Connection과 유사)
     private Set<WebSocketSession> sessions  = Collections.synchronizedSet(new HashSet<WebSocketSession>());
     
+    
     // afterConnectionEstablished - 클라이언트와 연결이 완료되고, 통신할 준비가 되면 실행. 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -75,6 +76,11 @@ public class NotificationWebsocketHandler extends TextWebSocketHandler{
     	
     	if(result == 0) return;
     
+    	
+    	
+    	
+    	
+    	
     	// /notification/send 로 연결된 객체를 만든 클라이언트들(sessions) 중
 		// 회원 번호가 받는 회원 번호와 같은 사람에게 메시지 전잘
 		for(WebSocketSession s : sessions) {

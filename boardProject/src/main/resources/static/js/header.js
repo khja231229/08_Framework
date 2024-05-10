@@ -18,8 +18,6 @@ if(notificationLoginCheck){ // 로그인 상태일 경우만 알림 WebSocket �
     /* 웹소켓을 이용해 알림을 전달하는 함수 */
     sendNotificationFn = (type, url, pkNo) => {
 
-        const title = document.querySelector(".board-title").innerText;
-
         const notification = {
             "notificationType" : type,
             "notificationUrl": url,
@@ -32,8 +30,6 @@ if(notificationLoginCheck){ // 로그인 상태일 경우만 알림 WebSocket �
 
     /* 웹소켓을 통해 서버에서 전달된 메시지가 있을 경우 */
     notificationSock.addEventListener("message", e => {
-        const obj = JSON.parse(e.data);
-        // console.log(obj)
 
         // 알람 버튼 활성화
         const notificationBtn = document.querySelector(".notification-btn");
@@ -264,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // 쿼리스트링 파라미터 중 cn 값을 얻어와 같은 아이디를 가지는 요소로 이동
     const params = new URLSearchParams(location.search)
-    const targetId = params.get("cn");
+    const targetId =  "c" + params.get("cn");
 
     let targetElement = document.getElementById(targetId);
 
