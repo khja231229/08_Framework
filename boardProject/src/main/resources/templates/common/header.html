@@ -99,7 +99,6 @@
 <!-- navigator -->
 <nav>
   <ul>
-
     <th:block th:each="boardType : ${application.boardTypeList}">
       <li>
         <a th:href="@{/board/{boardCode}(boardCode = ${boardType.boardCode})}"
@@ -107,5 +106,8 @@
       </li>
     </th:block>
 
+    <li>
+      <a href="/chatting">채팅</a>
+    </li>
   </ul>
 </nav>

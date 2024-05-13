@@ -6,6 +6,7 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
+import edu.kh.project.websocket.handler.ChattingWebsocketHandler;
 import edu.kh.project.websocket.handler.NotificationWebsocketHandler;
 import edu.kh.project.websocket.handler.TestWebsocketHandler;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,8 @@ public class WebsocketConfig implements WebSocketConfigurer{
 	// 알림 웹소켓 처리 객체 의존성 주입(DI)
 	private final NotificationWebsocketHandler notificationWebsocketHandler;
 	
-	
+	// 채팅 웹소켓 처리 객체 의존성 주입(DI)
+	private final ChattingWebsocketHandler chattingWebsocketHandler;
 	
 	
 	
@@ -56,13 +58,20 @@ public class WebsocketConfig implements WebSocketConfigurer{
 		// 알림 처리 핸들러와 주소 연결
 		registry
 			.addHandler(notificationWebsocketHandler, "/notification/send")
-			
 			.addInterceptors(handshakeInterceptor)
 			.setAllowedOriginPatterns("http://localhost/", 
 									  "http://127.0.0.1/", 
 									  "http://192.168.10.5/")
 			.withSockJS();
 		
+		// 채팅 처리 핸들러와 주소 연결
+		registry
+		.addHandler(chattingWebsocketHandler, "/chattingSock")
+		.addInterceptors(handshakeInterceptor)
+		.setAllowedOriginPatterns("http://localhost/", 
+				"http://127.0.0.1/", 
+				"http://192.168.10.5/")
+		.withSockJS();
 		
 	}
 	
