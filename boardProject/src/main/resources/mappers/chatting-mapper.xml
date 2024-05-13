@@ -42,7 +42,8 @@
 
 	<!-- 채팅 확인 -->
 	<select id="checkChattingNo" resultType="_int">
-		SELECT NVL(SUM(CHATTING_NO),0) CHATTING_NO FROM CHATTING_ROOM
+		SELECT NVL(SUM(CHATTING_NO),0) CHATTING_NO 
+		FROM CHATTING_ROOM
 		WHERE (OPEN_MEMBER = #{loginMemberNo} AND PARTICIPANT = #{targetNo})
 		OR (OPEN_MEMBER = #{targetNo} AND PARTICIPANT = #{loginMemberNo})
 	</select>
@@ -87,7 +88,8 @@
 
 	<!-- 채팅 상대 검색 -->
 	<select id="selectTarget" resultType="Member">
-		SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NICKNAME, PROFILE_IMG  FROM "MEMBER"
+		SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NICKNAME, PROFILE_IMG  
+		FROM "MEMBER"
 		WHERE (MEMBER_EMAIL LIKE '%${query}%' OR MEMBER_NICKNAME LIKE '%${query}%')
 		AND MEMBER_DEL_FL = 'N'
 		AND MEMBER_NO != ${memberNo}
