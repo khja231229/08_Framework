@@ -1,5 +1,6 @@
 package edu.kh.project.main.controller;
 
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller // bean 등록
 @RequiredArgsConstructor
+@PropertySource("classpath:/config.properties")
 public class MainController {
 	
 	private final MainService service;
