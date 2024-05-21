@@ -1,6 +1,5 @@
 /* 서비스키(인증키) */
 const serviceKey = "BTjX5Rqk5SZSwrW687YxxqoqoH7FbYV/BKqfde1PPn0jiIoOy6aYAUb1MuK7h9izWzM/YX6SVOjBBUMIuwRRIg==";
-
 const numOfRows = 1000; // 조회할 데이터 개수
 const pageNo = 1; // 조회할 페이지
 const dataType = "JSON"; // 응답 데이터 타입(JSON/XML)
@@ -16,7 +15,7 @@ const currentWeather = document.querySelector(".current-weather");
 
 /* ****** 초단기 예보 비동기 요청할 함수 정의 ****** */
 // regionValue : 지역명(서울, 부산, 제주...)
-const getUltraSrtNcst = (regionValue) => {
+const getUltraSrtFcst = (regionValue) => {
 
   // 데이터를 요청해서 응답 받을 주소(Callback URL)
   const curl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
@@ -51,6 +50,9 @@ const getUltraSrtNcst = (regionValue) => {
 
     console.log(result);
 
+    // [위] 공공 데이터 Open API를 이용한 데이터 요청 및 응답
+    // -------------------------------------------------------------
+    // [아래] 개발자가 응답 받은 데이터 활용
 
     // 요청 데이처 중 item (객체 배열)
     const list = result.response.body.items.item;
@@ -178,10 +180,10 @@ const getUltraSrtPtyState = (code) => {
 /* select 변경 시 해당 지역 날씨 조회 */
 region.addEventListener("change", e => {
   regionName.innerText = e.target.value; // 화면 지역명 변경
-  getUltraSrtNcst(e.target.value); // 해당 지역 날씨 조회
+  getUltraSrtFcst(e.target.value); // 해당 지역 날씨 조회
 })
 
 /* 화면 로딩이 종료된 후 "서울" 지역 날씨 조회 */
 document.addEventListener("DOMContentLoaded", () => {
-  getUltraSrtNcst("서울");
+  getUltraSrtFcst("서울");
 })
