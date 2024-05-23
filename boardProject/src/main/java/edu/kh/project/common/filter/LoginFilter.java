@@ -39,12 +39,17 @@ public class LoginFilter implements Filter{
 		// Session 얻어오기
 		HttpSession session = req.getSession();
 		
+		
 		// 세션에서 로그인한 회원 정보를 얻어왔으나 없을 때
 		// -> 로그인이 되어있지 않은 상태
 		if( session.getAttribute("loginMember") == null ) {
+			session.setAttribute("destination", req.getRequestURI()); // /myPage/changePw
+			
+			System.out.println("req.getRequestURI() : " + req.getRequestURI());
 			
 			// /loginError 재요청
-			resp.sendRedirect("/loginError");
+//			resp.sendRedirect("/loginError");
+			resp.sendRedirect("/member/login");
 		}
 		
 		// 로그인 되어있는 경우

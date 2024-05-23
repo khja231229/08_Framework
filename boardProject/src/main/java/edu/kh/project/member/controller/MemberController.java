@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -22,6 +23,7 @@ import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.member.model.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import oracle.jdbc.OracleDatabaseException;
 
@@ -75,6 +77,8 @@ public class MemberController {
 		RedirectAttributes ra,
 		Model model,
 		@RequestParam(value = "saveId", required = false) String saveId,
+		HttpSession session,
+		//@SessionAttribute(value="destinaion", required = false) String destination,
 		HttpServletResponse resp
 		) {
 		
@@ -125,10 +129,15 @@ public class MemberController {
 			}
 			
 			// 응답 객체에 쿠키 추가 -> 클라이언트로 전달
-			resp.addCookie(cookie);
+			resp.addCookie(cookie);  
 			
 			/* ******************************************** */
 		}
+		
+		String destination = (String)session.getAttribute("destination");
+		
+		log.info("destination : {}", destination);
+		if(destination != null) return "redirect:" + destination;
 		
 		return "redirect:/"; // 메인페이지 재요청
 	}

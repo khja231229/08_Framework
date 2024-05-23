@@ -7,11 +7,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -20,6 +26,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import edu.kh.api.dto.Dong;
+import edu.kh.api.dto.Dosi;
+import edu.kh.api.dto.Sigungu;
 
 @Controller
 public class ApiController {
@@ -247,11 +257,6 @@ public class ApiController {
 		
 		return "ex2";
 	}
-	
-	
-	
-	
-	
 	
 	
 }
