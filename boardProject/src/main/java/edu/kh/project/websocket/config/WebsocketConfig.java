@@ -48,7 +48,8 @@ public class WebsocketConfig implements WebSocketConfigurer{
 			
 			.setAllowedOriginPatterns("http://localhost/", 
 									  "http://127.0.0.1/", 
-									  "http://192.168.10.5/")
+									  "http://192.168.10.5/",
+									  "http://43.200.183.6")
 			 // 웹소켓 요청이 허용되는 ip/도메인 지정
 			
 			.withSockJS();

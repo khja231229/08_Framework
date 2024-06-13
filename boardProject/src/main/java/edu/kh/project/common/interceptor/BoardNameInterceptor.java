@@ -9,9 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+//@Slf4j
 public class BoardNameInterceptor implements HandlerInterceptor{
 
 	// 후처리 (Controller -> Dispatcher Servlet 사이) 
